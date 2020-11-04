@@ -1,11 +1,11 @@
 * {
-  font-family: "Josefin Sans", sans-serif;
+  font-family: "Titillium Web", sans-serif;
   box-sizing: border-box;
 }
 html {
   scroll-behavior: smooth;
 }
-a {
+.navbar a {
   text-decoration: none !important;
-  color: #ff8e3c !important;
+  color: #1b2d45 !important;
 }
