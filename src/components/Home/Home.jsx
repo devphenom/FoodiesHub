@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-// import AsyncSelect from "react-select/async";
 import { Link } from "react-router-dom";
 import "./Home.css";
+
 const Home = () => {
   const [search, setSearch] = useState("");
   const handleSearchChange = (event) => setSearch(event.target.value);

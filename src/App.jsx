@@ -1,7 +1,7 @@
 import React from "react";
 import { Switch, BrowserRouter as Router, Route } from "react-router-dom";
-import Home from "./components/Home";
-import MealList from "./components/MealList";
+import Home from "./components/Home/Home";
+import MealList from "./components/MealList/MealList";
 import NoMatch from "./components/NoMatch";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
