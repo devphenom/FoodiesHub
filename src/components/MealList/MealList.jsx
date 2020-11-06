@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 import "./MealList.css";
 
@@ -17,16 +18,19 @@ function imagesLoaded(parentNode) {
 const MealList = (props) => {
   const [searchItem] = useState(props.match.params.id);
   const [dataFetched, setDataFetched] = useState([]);
+  const [searching, setSearching] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // eslint-disable-next-line no-unused-vars
     let unmounted = false;
-    fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchItem}`)
-      .then((res) => res.json())
+    setSearching(true);
+    axios
+      .get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchItem}`)
       .then((res) => {
-        console.log(res.meals);
-        setDataFetched(res.meals || []);
+        console.log(res.data.meals);
+        setDataFetched(res.data.meals || "");
+        setSearching(false);
       })
       .catch((error) =>
         alert("failed to fetch data. kindly check your internet connection")
@@ -92,7 +96,7 @@ const MealList = (props) => {
           </div>
         </Link>
       ));
-    } else if (result.length === 0) {
+    } else if (typeof result === "string") {
       return <div className="col-10 mx-auto">No result found</div>;
     }
   };
@@ -110,7 +114,7 @@ const MealList = (props) => {
           >
             <div className="col-12">
               <h6 className="text-center mx-auto font-weight-bold">
-                Search result for{" "}
+                {searching ? "Searching" : "Search"} result for{" "}
                 <span className="text-primary text-uppercase">
                   {searchItem}
                 </span>
