@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import "./Home.css";
 
 const Home = (props) => {
-  const [search, setSearch] = useState("");
-  const handleSearchChange = (event) => setSearch(event.target.value);
-  const handleRedirect = (e) => props.history.push(`/search=${search}`);
+  const handleSearchChange = (e) => {
+    props.setSearch(e.target.value);
+    console.log(props.search);
+  };
+  const handleRedirect = (e) => {
+    props.setSearch(e.target.value);
+    props.history.push(`/search`);
+  };
 
   return (
     <header className="header d-flex align-items-center py-5">
@@ -27,10 +32,10 @@ const Home = (props) => {
                   placeholder="Search meal"
                   aria-label="Search meal"
                   aria-describedby="basic-addon2"
-                  value={search}
+                  value={props.search}
                   onChange={handleSearchChange}
                 />
-                <Link to={`/search=${search}`} className="input-group-append">
+                <Link to={`/search`} className="input-group-append">
                   <span className="input-group-text button" id="basic-addon2">
                     <i className="fa fa-search" aria-hidden="true"></i>
                   </span>
@@ -57,10 +62,10 @@ const Home = (props) => {
                   placeholder="Search meal"
                   aria-label="Search meal"
                   aria-describedby="basic-addon2"
-                  value={search}
+                  value={props.search}
                   onChange={handleSearchChange}
                 />
-                <Link to={`/search=${search}`} className="input-group-append">
+                <Link to={`/search`} className="input-group-append">
                   <span className="input-group-text button" id="basic-addon2">
                     <i className="fa fa-search" aria-hidden="true"></i>
                   </span>

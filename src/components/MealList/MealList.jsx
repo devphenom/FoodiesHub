@@ -15,13 +15,14 @@ function imagesLoaded(parentNode) {
   return true;
 }
 
-const MealList = (props) => {
-  const [searchItem] = useState(props.match.params.id);
+const MealList = ({ propsData }) => {
+  const [searchItem] = useState(propsData.search);
   const [dataFetched, setDataFetched] = useState([]);
   const [searching, setSearching] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log(propsData.search, searchItem);
     // eslint-disable-next-line no-unused-vars
     let unmounted = false;
     setSearching(true);
@@ -81,28 +82,28 @@ const MealList = (props) => {
           />
           <div className="card-body my-2">
             <h5 className="card-title font-weight-bold">{i.strMeal}</h5>
-            <div className="row">
-              {i.strTags
-                ? i.strTags
-                    .split(",")
-                    .map((j) => (
-                      <p className="m-1 px-2 py-2 rounded bg-white">{j}</p>
-                    ))
-                : null}
-            </div>
             <div className="text-right mt-3">
               <i className="far fa-heart fa-2x "></i>
+            </div>
+            <div className="row">
+              <p className="bg-white px-3 py-2">
+                Category:{" "}
+                <span className="font-weight-bold">{i.strCategory}</span>
+              </p>
+              <p className="bg-white px-3 py-2 m-2">
+                Area: <span className="font-weight-bold">{i.strArea}</span>
+              </p>
             </div>
           </div>
         </Link>
       ));
     } else if (typeof result === "string") {
-      return <div className="col-10 mx-auto">No result found</div>;
+      return <h5 className="col-10 mx-auto text-center">No result found</h5>;
     }
   };
 
   return (
-    <div>
+    <div style={{ minHeight: "80vh" }}>
       {renderSpinner()}
       <section>
         <div className="container-fluid">
@@ -113,12 +114,12 @@ const MealList = (props) => {
             }}
           >
             <div className="col-12">
-              <h6 className="text-center mx-auto font-weight-bold">
+              <h3 className="text-center mx-auto font-weight-bold">
                 {searching ? "Searching" : "Search"} result for{" "}
                 <span className="text-primary text-uppercase">
                   {searchItem}
                 </span>
-              </h6>
+              </h3>
             </div>
             {renderAllItems(dataFetched)}
           </div>
