@@ -1,14 +1,13 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+
+import { setSearchTerm } from "../Redux/actionCreators";
 import "./Home.css";
 
 const Home = (props) => {
-  const handleSearchChange = (e) => {
-    props.setSearch(e.target.value);
-    console.log(props.search);
-  };
   const handleRedirect = (e) => {
-    props.setSearch(e.target.value);
+    e.preventDefault();
     props.history.push(`/search`);
   };
 
@@ -32,8 +31,8 @@ const Home = (props) => {
                   placeholder="Search meal"
                   aria-label="Search meal"
                   aria-describedby="basic-addon2"
-                  value={props.search}
-                  onChange={handleSearchChange}
+                  value={props.searchTerm}
+                  onChange={props.handleSearchChange}
                 />
                 <Link to={`/search`} className="input-group-append">
                   <span className="input-group-text button" id="basic-addon2">
@@ -63,7 +62,7 @@ const Home = (props) => {
                   aria-label="Search meal"
                   aria-describedby="basic-addon2"
                   value={props.search}
-                  onChange={handleSearchChange}
+                  onChange={props.handleSearchChange}
                 />
                 <Link to={`/search`} className="input-group-append">
                   <span className="input-group-text button" id="basic-addon2">
@@ -86,4 +85,11 @@ const Home = (props) => {
   );
 };
 
-export default Home;
+const mapStateToProps = (state) => ({ searchTerm: state.searchTerm });
+const mapDispatchToProps = (dispatch) => ({
+  handleSearchChange(e) {
+    dispatch(setSearchTerm(e.target.value));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
