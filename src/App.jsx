@@ -5,6 +5,7 @@ import { Switch, BrowserRouter as Router, Route } from "react-router-dom";
 import store from "./components/Redux/store";
 import Home from "./components/Home/Home";
 import MealList from "./components/MealList/MealList";
+import Details from "./components/Details/Details";
 import NoMatch from "./components/NoMatch";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -20,6 +21,7 @@ const App = () => {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/search" component={MealList} />
+            <Route path="/details/:id" component={Details} />
             <Route component={NoMatch} />
           </Switch>
           <Footer />

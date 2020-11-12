@@ -1,5 +1,9 @@
 import { combineReducers } from "redux";
-import { SET_SEARCH_TERM, ADD_DATA_FETCHED } from "./actions";
+import {
+  SET_SEARCH_TERM,
+  ADD_DATA_FETCHED,
+  ADD_RECIPE_DETAILS,
+} from "./actions";
 
 const searchTerm = (state = "", action) => {
   if (action.type === SET_SEARCH_TERM) {
@@ -17,6 +21,15 @@ const dataFetched = (state = {}, action) => {
   return state;
 };
 
-const rootReducer = combineReducers({ searchTerm, dataFetched });
+const fetchedRecipe = (state = {}, action) => {
+  if (action.type === ADD_RECIPE_DETAILS) {
+    return Object.assign({}, state, {
+      [action.payload.idMeal]: action.payload,
+    });
+  }
+  return state;
+};
+
+const rootReducer = combineReducers({ searchTerm, dataFetched, fetchedRecipe });
 
 export default rootReducer;

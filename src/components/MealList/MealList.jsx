@@ -63,7 +63,7 @@ const MealList = (props) => {
   const renderAllItems = (result) => {
     if (result.length > 0) {
       return result.map((i) => (
-        <Link key={i.idMeal} className="mx-auto">
+        <Link key={i.idMeal} className="mx-auto" to={`/details/${i.idMeal}`}>
           <div
             className="card mx-1 my-3 shadow mealCard border-0"
             style={{ width: "18rem" }}
