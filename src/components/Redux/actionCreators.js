@@ -21,12 +21,21 @@ export function addRecipeDetails(fetchedRecipe) {
 }
 
 export function fetchRecipeDetails(idMeal) {
-  return (dispatch) => {
-    axios
-      .get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`)
-      // .then((res) => console.log(res.data.meals[0]))
-      .then((res) => dispatch(addRecipeDetails(res.data.meals[0])))
-      .catch((error) => console.error(error));
+  return (dispatch, getState) => {
+    const apiData = getState().dataFetched[getState().searchTerm]
+      ? getState().dataFetched[getState().searchTerm]
+      : [];
+    // console.log(apiData);
+    const fetchedRecipe = apiData.find((obj) => obj.idMeal === idMeal) || "";
+    if (fetchedRecipe) {
+      dispatch(addRecipeDetails(fetchedRecipe));
+    } else {
+      axios
+        .get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`)
+        // .then((res) => console.log(res.data.meals[0]))
+        .then((res) => dispatch(addRecipeDetails(res.data.meals[0])))
+        .catch((error) => console.error(error));
+    }
   };
 }
 

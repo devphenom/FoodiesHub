@@ -116,7 +116,7 @@ const MealList = (props) => {
               </h5>
             </div>
             <div className="col-md-6 mx-auto">
-              {props.apiData && console.log(props.apiData)}
+              {props.apiData && console.log(props.apiData)}````
               <form className="py-4" onSubmit={launchGetAPI}>
                 <div className="input-group mb-3 input-border rounded">
                   <input

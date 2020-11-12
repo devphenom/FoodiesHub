@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { fetchRecipeDetails } from "../Redux/actionCreators";
 
 const Details = (props) => {
+  const fetchedData = props.fR || "";
   useEffect(() => {
     props.fetchAPI();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -13,14 +14,9 @@ const Details = (props) => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-12">
-            <img
-              src={
-                props.fetchedRecipe.strMealThumb &&
-                props.fetchedRecipe.strMealThumb
-              }
-              alt=""
-            />
-            {console.log(props.fetchedRecipe && props.fetchedRecipe)}
+            <img src={fetchedData.strMealThumb} className="img-fluid" alt="" />
+            <h1>{fetchedData.strMeal}</h1>
+            {console.log(fetchedData)}
           </div>
         </div>
       </div>
@@ -28,7 +24,17 @@ const Details = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({ fetchedRecipe: state.fetchedRecipe });
+const mapStateToProps = (state, ownProps) => {
+  const fR = state.fetchedRecipe[ownProps.match.params.id];
+  //   const fetchedRecipe =
+  //     apiData.find((obj) => obj.idMeal === ownProps.match.params.id) ||
+  //     state.fetchedRecipe;
+
+  return {
+    searchTerm: state.searchTerm,
+    fR,
+  };
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   fetchAPI() {
