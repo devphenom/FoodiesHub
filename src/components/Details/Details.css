@@ -1,0 +1,16 @@
+:root {
+  --foodiesLightGreen: #6ef1dd59;
+}
+.details-img {
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+  height: 200px !important;
+  width: 100% !important;
+  overflow: hidden;
+}
+.det-p {
+  margin: 2px auto !important;
+  padding: 5px 10px;
+  background-color: var(--foodiesLightGreen);
+  border-radius: 10px;
+}

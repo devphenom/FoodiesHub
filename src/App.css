@@ -1,3 +1,7 @@
+root {
+  --foodiesGreen: #00ebc7;
+}
+
 * {
   font-family: "Josefin Sans", sans-serif;
   box-sizing: border-box;
