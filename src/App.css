@@ -1,5 +1,16 @@
-root {
-  --foodiesGreen: #00ebc7;
+:root {
+  /* --foodiesGreen: #00b89c;
+  --foodiesBtn: #00ab91;
+  --foodiesBlue: #006b5b;
+  --foodiesGrey: #206b60;
+  --foodiesBg: #eefcf8; */
+
+  --orange: #ff691f;
+  --tuftbrush: #ffdece;
+  --mineshaft: #2c2c2c;
+  --tundora: #4b4b4b;
+  --dustygray: #999;
+  --gallery: #efefef;
 }
 
 * {
@@ -8,56 +19,10 @@ root {
 }
 #main {
   min-height: 100vh;
-  background-color: #fffffe;
+  background-color: white /*#fffffe */;
 }
 
 /* NAVBAR STYLES */
-/* hover extracted from hover-min.css */
-.hvr-underline-from-left {
-  display: inline-block;
-  vertical-align: middle;
-  -webkit-transform: perspective(1px) translateZ(0);
-  transform: perspective(1px) translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-  position: relative;
-  overflow: hidden;
-}
-.hvr-underline-from-left:before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  left: 0;
-  right: 100%;
-  bottom: 0;
-  background: linear-gradient(to left, hsl(192, 70%, 51%), hsl(136, 65%, 51%));
-  height: 4px;
-  -webkit-transition-property: right;
-  transition-property: right;
-  -webkit-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-  -webkit-transition-timing-function: ease-out;
-  transition-timing-function: ease-out;
-}
-.hvr-underline-from-left:active:before,
-.hvr-underline-from-left:focus:before,
-.hvr-underline-from-left:hover:before {
-  right: 0;
-}
-/* border radius on active elements */
-.border-rad {
-  border-bottom: 4px solid;
-  border-image: linear-gradient(
-    to left,
-    hsl(192, 70%, 51%),
-    hsl(136, 65%, 51%)
-  );
-  border-image-slice: 3;
-}
-/* navbar background on small screen */
-.bg-gray {
-  background: linear-gradient(rgba(82, 80, 26, 0.5), rgba(0, 0, 0, 0.5))
-    center/cover no-repeat fixed !important;
-}
 /* toggle icon on small screen changes */
 .animated-icon3 {
   width: 30px;
@@ -102,45 +67,6 @@ root {
   transform-origin: left center;
 }
 
-.animated-icon3 span:nth-child(2) {
-  top: 10px;
-  -webkit-transform-origin: left center;
-  -moz-transform-origin: left center;
-  -o-transform-origin: left center;
-  transform-origin: left center;
-}
-
-.animated-icon3 span:nth-child(3) {
-  top: 20px;
-  -webkit-transform-origin: left center;
-  -moz-transform-origin: left center;
-  -o-transform-origin: left center;
-  transform-origin: left center;
-}
-
-.animated-icon3.open span:nth-child(1) {
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -o-transform: rotate(45deg);
-  transform: rotate(45deg);
-  top: 0px;
-  left: 8px;
-}
-
-.animated-icon3.open span:nth-child(2) {
-  width: 0%;
-  opacity: 0;
-}
-
-.animated-icon3.open span:nth-child(3) {
-  -webkit-transform: rotate(-45deg);
-  -moz-transform: rotate(-45deg);
-  -o-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-  top: 21px;
-  left: 8px;
-}
-
 .underline {
   width: 60%;
   height: 5px;
@@ -157,25 +83,58 @@ root {
   }
 } */
 
-a {
+/* a {
   text-decoration: none !important;
   color: #212529 !important;
-}
+} */
 
 /*  */
-.text-main {
-  color: #00214d;
+.text-orange {
+  color: var(--orange);
+}
+.text-mineshaft {
+  color: var(--mineshaft);
+}
+.text-tundora {
+  color: var(--tundora);
+}
+.text-dustygray {
+  color: var(--dustygray);
+}
+/* .text-fb {
+  color: var(--foodiesBlue);
 }
 .text-p {
-  color: #1b2d45;
+  color: var(--foodiesGrey);
+} */
+/* .text-main {
+  color: #3f3d56;
 }
 .text-sec {
   color: #00ebc7;
-}
+} */
 .button {
-  background-color: #00ebc7 !important;
-  color: #00214d !important;
+  background-color: var(--orange) !important;
+  color: var(--tuftbrush) !important;
 }
-.input-border {
+.btn-orange {
+  background-color: var(--orange) !important;
+  color: white !important;
+}
+.btn-orange:hover {
+  background-color: var(--tuftbrush) !important;
+  color: var(--orange) !important;
+}
+.btn-outline-orange {
+  background-color: white;
+  color: var(--orange) !important;
+  border: 2px solid var(--orange) !important;
+}
+.btn-outline-orange:hover {
+  background-color: var(--orange);
+  color: white !important;
+  border: 2px solid var(--orange) !important;
+}
+/* .input-border {
   border: 2px solid #00214d !important;
-}
+} */
