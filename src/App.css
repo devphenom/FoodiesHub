@@ -116,6 +116,7 @@
 .button {
   background-color: var(--orange) !important;
   color: var(--tuftbrush) !important;
+  cursor: pointer;
 }
 .btn-orange {
   background-color: var(--orange) !important;

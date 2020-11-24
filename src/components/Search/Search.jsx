@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { setSearchTerm, getAPIData } from "../Redux/actionCreators";
-import "./MealList.css";
+import "./Search.css";
 
 function imagesLoaded(parentNode) {
   const imgElements = [...parentNode.querySelectorAll("img")];

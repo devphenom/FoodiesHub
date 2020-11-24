@@ -9,7 +9,7 @@ import "./Home.css";
 const Home = (props) => {
   const handleRedirect = (e) => {
     e.preventDefault();
-    props.history.push(`/search`);
+    props.searchTerm && props.history.push(`/search`);
   };
 
   return (
@@ -63,11 +63,11 @@ const Home = (props) => {
                     value={props.searchTerm}
                     onChange={props.handleSearchChange}
                   />
-                  <Link to={`/search`} className="input-group-append">
+                  <div onClick={handleRedirect} className="input-group-append">
                     <span className="input-group-text button" id="basic-addon2">
                       <i className="fa fa-search" aria-hidden="true"></i>
                     </span>
-                  </Link>
+                  </div>
                 </div>
               </form>
               <h1 className="font-weight-bold text-center text-md-left text-mineshaft py-1 home-h1">
