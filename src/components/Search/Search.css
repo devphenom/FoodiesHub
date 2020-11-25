@@ -1,6 +1,8 @@
-/* :root {
-  --foodiesGreen: #00ebc7;
-} */
+.search-input-mobile {
+  background-color: var(--gallery) !important;
+  border-radius: 5px !important;
+  width: 200px !important;
+}
 
 .mealCard {
   border-radius: 30px !important;
@@ -12,15 +14,6 @@
 }
 
 @media screen and (min-width: 420px) {
-  .mealCard {
-    border-radius: 30px !important;
-    background-color: var(--foodiesGreen) !important;
-  }
-  .mealcard-img {
-    /* border-top-left-radius: 30px !important;
-    border-top-right-radius: 30px !important; */
-    border-radius: 50% !important;
-  }
 }
 
 /* LOADING */

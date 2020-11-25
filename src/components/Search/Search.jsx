@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { setSearchTerm, getAPIData } from "../Redux/actionCreators";
+import Navbar from "../Navbar/Navbar";
 import "./Search.css";
 
 function imagesLoaded(parentNode) {
@@ -17,7 +18,6 @@ function imagesLoaded(parentNode) {
 }
 
 const MealList = (props) => {
-  const [searching, setSearching] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const launchGetAPI = (e) => {
@@ -32,7 +32,6 @@ const MealList = (props) => {
   useEffect(() => {
     let unmounted = false; // eslint-disable-line no-unused-vars
     launchGetAPI();
-    setSearching(true);
     return () => (unmounted = true);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -63,26 +62,38 @@ const MealList = (props) => {
   const renderAllItems = (result) => {
     if (result.length > 0) {
       return result.map((i) => (
-        <Link key={i.idMeal} className="mx-auto" to={`/details/${i.idMeal}`}>
+        <div key={i.idMeal} className="mx-auto">
           <div
             className="card mx-1 my-3 shadow mealCard border-0"
             style={{ width: "18rem" }}
           >
-            <img
-              src={i.strMealThumb}
-              className="card-img-top mealcard-img"
-              alt={i.strMeal}
-              onLoad={handleLoadChange}
-              onError={handleLoadChange}
-            />
-            <div className="card-body m-2 row align-items-center">
-              <h4 className="card-title font-weight-bold">{i.strMeal}</h4>
-              <span className="text-right mt-3 ml-auto">
-                <i className="far fa-heart fa-2x "></i>
-              </span>
+            <Link to={`/details/${i.idMeal}`}>
+              <img
+                src={i.strMealThumb}
+                className="card-img-top mealcard-img"
+                alt={i.strMeal}
+                onLoad={handleLoadChange}
+                onError={handleLoadChange}
+              />
+            </Link>
+            <div className="card-body my-2 mx-3">
+              <div className="row align-items-center justify-content-between mb-2">
+                <Link to={`/details/${i.idMeal}`}>
+                  <h3 className="card-title font-weight-bold mb-0 text-orange">
+                    {i.strMeal}
+                  </h3>
+                </Link>
+                <div className="">
+                  <i className="far fa-heart fa-2x "></i>
+                </div>
+              </div>
+              <div className="row align-items-center justify-content-between mt-2">
+                <p>Category: {i.strCategory}</p>
+                <p>Area: {i.strArea}</p>
+              </div>
             </div>
           </div>
-        </Link>
+        </div>
       ));
     } else {
       return <h5 className="col-10 mx-auto text-center">No result found</h5>;
@@ -90,51 +101,27 @@ const MealList = (props) => {
   };
 
   return (
-    <div style={{ minHeight: "80vh" }}>
-      <section>
+    <div>
+      <Navbar search />
+      <section className="d-md-none">
         <div className="container-fluid py-3">
-          <div className="row text-center mx-auto">
-            <div className="col-12">
-              <h2 className="font-weight-bold text-p">
-                Make your own food, Stay at{" "}
-                <span className="text-main text-uppercase"> home</span>
-              </h2>
-              <div className="underline d-md-none"></div>
+          <div className="row mx-auto align-items-center">
+            <div className="search-item">
+              <i className="fas fa-filter" aria-hidden="true"></i>
             </div>
-          </div>
-          <div className="row align-items-center">
-            <div className="col-md-4">
-              <h5
-                className={`${
-                  !props.searchTerm ? "d-none" : null
-                } text-center text-sec mx-auto font-weight-bold`}
-              >
-                {searching ? "Searching" : "Search"} result for{" "}
-                <span className=" text-main text-uppercase">
-                  {props.searchTerm}
-                </span>
-              </h5>
+            <div className="search-item mx-2">
+              <i className="fas fa-sort-alpha-down" aria-hidden="true"></i>
             </div>
-            <div className="col-md-6 mx-auto">
-              {props.apiData && console.log(props.apiData)}````
-              <form className="py-4" onSubmit={launchGetAPI}>
-                <div className="input-group mb-3 input-border rounded">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Search meal"
-                    aria-label="Search meal"
-                    aria-describedby="basic-addon2"
-                    value={props.searchTerm}
-                    onChange={props.handleSearchChange}
-                  />
-                  <div onClick={launchGetAPI} className="input-group-append">
-                    <span className="input-group-text button" id="basic-addon2">
-                      <i className="fa fa-search" aria-hidden="true"></i>
-                    </span>
-                  </div>
-                </div>
-              </form>
+            <div className="">
+              <input
+                placeholder="&#xF002; search meal..."
+                type="text"
+                className="form-control search-input search-input-mobile"
+                id="search meal"
+                aria-describedby="search meal"
+                value={props.searchTerm}
+                onChange={props.handleSearchChange}
+              />
             </div>
           </div>
         </div>
@@ -149,7 +136,6 @@ const MealList = (props) => {
             }}
           >
             {props.apiData && renderAllItems(props.apiData)}
-            {/* console.log(props.apiData[props.searchTerm].meals) */}
           </div>
         </div>
       </section>
@@ -175,4 +161,5 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(getAPIData());
   },
 });
+
 export default connect(mapStateToProps, mapDispatchToProps)(MealList);
