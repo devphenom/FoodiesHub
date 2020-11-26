@@ -1,6 +1,8 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
+import { setSearchTerm, getAPIData } from "../Redux/actionCreators";
 import "./Navbar.css";
 
 const Navbar = (props) => {
@@ -79,28 +81,19 @@ const Navbar = (props) => {
       <Link to="/" className="navbar-brand text-orange ml-md-5">
         <strong>FoodiesHUB</strong>
       </Link>
-      {/* <!-- nav toggler --> */}
-
-      {/* <!-- nav links --> */}
       {navItems}
-      {/* <div
-        id="navbarLinks"
-        className="navbar-collapse collapse text-center text-mineshaft"
-      >
-        <ul className="navbar-nav ml-auto mr-5">
-          <li className="nav-item mx-2">
-            <Link to="/create-recipe" className="nav-link">
-              Create Recipe
-            </Link>
-          </li>
-          <li className="nav-item mx-2">
-            <Link to="/favourites" className="nav-link">
-              Favourites
-            </Link>
-          </li>
-        </ul>
-      </div> */}
     </nav>
   );
 };
-export default Navbar;
+const mapStateToProps = (state) => ({ searchTerm: state.searchTerm });
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  handleSearchChange(e) {
+    dispatch(setSearchTerm(e.target.value));
+    dispatch(getAPIData());
+  },
+  getAPI() {
+    dispatch(getAPIData());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
