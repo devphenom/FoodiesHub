@@ -21,6 +21,7 @@ const MealList = (props) => {
   // const [loading, setLoading] = useState(true);
   const [apiData, setApiData] = useState("");
   const [sort, setSort] = useState(true);
+  const [visible, setVisible] = useState(10);
   console.log(apiData, props.apiData);
 
   const launchGetAPI = (e) => {
@@ -32,6 +33,9 @@ const MealList = (props) => {
       }
     }
   };
+  console.log(visible);
+
+  const loadMore = () => setVisible((prevVisible) => prevVisible + 10);
 
   const handleSort = (arr) => {
     setSort(!sort);
@@ -167,7 +171,7 @@ const MealList = (props) => {
         <div className="container-fluid">
           <div className="row py-5 mx-auto">
             {apiData.length > 1 &&
-              apiData.map((i) => (
+              apiData.slice(0, visible).map((i) => (
                 <div key={i.idMeal} className="mx-auto">
                   <div
                     className="card mx-1 my-3 shadow mealCard border-0"
@@ -202,6 +206,19 @@ const MealList = (props) => {
                 </div>
               ))}
           </div>
+          <div className="row py-5 mx-auto">
+            <div className="col-md-6 mx-auto text-center">
+              {visible < apiData.length && (
+                <button
+                  className="btn btn-outline-orange mx-auto text-center rounded-pill px-4 py-2"
+                  onClick={loadMore}
+                >
+                  SHOW MORE
+                </button>
+              )}
+            </div>
+          </div>
+          <div className="row mx-auto py-3"></div>
           {/* <div
             className="row py-5 mx-auto"
             ref={(element) => {
