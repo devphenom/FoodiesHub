@@ -135,7 +135,7 @@ const MealList = (props) => {
 
   return (
     <div>
-      <Navbar search handleSort={handleSort} apiData={apiData} />
+      <Navbar search handleSort={handleSort} apiData={apiData} sort={sort} />
       <section className="d-md-none">
         <div className="container-fluid py-3">
           <div className="row mx-auto align-items-center">
@@ -143,7 +143,7 @@ const MealList = (props) => {
               <i className="fas fa-filter" aria-hidden="true"></i>
             </div>
             <div
-              className="search-item mx-2"
+              className={`search-item mx-2 ${!sort ? "active" : ""}`}
               onClick={() => handleSort(apiData)}
             >
               <i className="fas fa-sort-alpha-down" aria-hidden="true"></i>

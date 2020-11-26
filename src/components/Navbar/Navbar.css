@@ -63,6 +63,10 @@ nav button {
   background-color: var(--tuftbrush);
   color: var(--orange);
 }
+.search-item.active {
+  background-color: var(--tuftbrush) !important;
+  color: var(--orange) !important;
+}
 
 .search-input {
   background-color: transparent !important;
