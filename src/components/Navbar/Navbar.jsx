@@ -17,7 +17,12 @@ const Navbar = (props) => {
           <li className="search-item mx-2">
             <i className="fas fa-filter" aria-hidden="true"></i>
           </li>
-          <li className="search-item mx-2">
+          <li
+            className="search-item mx-2"
+            onClick={() => {
+              props.handleSort(props.apiData);
+            }}
+          >
             <i className="fas fa-sort-alpha-down" aria-hidden="true"></i>
           </li>
           <li className=" mx-2">
