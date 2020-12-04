@@ -1,8 +1,9 @@
 import { combineReducers } from "redux";
 import {
   SET_SEARCH_TERM,
-  ADD_DATA_FETCHED,
+  ADD_ALL_RECIPE,
   ADD_RECIPE_DETAILS,
+  SET_CATEGORY,
 } from "./actions";
 
 const searchTerm = (state = "", action) => {
@@ -12,10 +13,17 @@ const searchTerm = (state = "", action) => {
   return state;
 };
 
-const dataFetched = (state = {}, action) => {
-  if (action.type === ADD_DATA_FETCHED) {
+const category = (state = "", action) => {
+  if (action.type === SET_CATEGORY) {
+    return action.payload;
+  }
+  return state;
+};
+
+const allRecipe = (state = {}, action) => {
+  if (action.type === ADD_ALL_RECIPE) {
     return Object.assign({}, state, {
-      [action.payload.searchTerm]: action.payload.dataFetched,
+      [action.payload.recipeCategory]: action.payload.recipes,
     });
   }
   return state;
@@ -30,6 +38,11 @@ const fetchedRecipe = (state = {}, action) => {
   return state;
 };
 
-const rootReducer = combineReducers({ searchTerm, dataFetched, fetchedRecipe });
+const rootReducer = combineReducers({
+  searchTerm,
+  category,
+  allRecipe,
+  fetchedRecipe,
+});
 
 export default rootReducer;

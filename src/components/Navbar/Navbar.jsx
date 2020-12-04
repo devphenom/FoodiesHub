@@ -5,9 +5,16 @@ import { Link } from "react-router-dom";
 import { setSearchTerm, getAPIData } from "../Redux/actionCreators";
 import "./Navbar.css";
 
-const Navbar = (props) => {
+const Navbar = ({
+  search,
+  sort,
+  handleSort,
+  apiData,
+  searchTerm,
+  handleSearchChange,
+}) => {
   let navItems;
-  if (props.search) {
+  if (search) {
     navItems = (
       <div
         id="navbarLinks"
@@ -18,9 +25,9 @@ const Navbar = (props) => {
             <i className="fas fa-filter" aria-hidden="true"></i>
           </li>
           <li
-            className={`search-item mx-2 ${!props.sort ? "active" : ""}`}
+            className={`search-item mx-2 ${!sort ? "active" : ""}`}
             onClick={() => {
-              props.handleSort(props.apiData);
+              handleSort(apiData);
             }}
           >
             <i className="fas fa-sort-alpha-down" aria-hidden="true"></i>
@@ -33,8 +40,8 @@ const Navbar = (props) => {
                 id="search meal"
                 aria-describedby="search meal"
                 placeholder="search meal..."
-                value={props.searchTerm}
-                onChange={props.handleSearchChange}
+                value={searchTerm}
+                onChange={handleSearchChange}
               />
             </div>
           </li>
@@ -91,7 +98,7 @@ const Navbar = (props) => {
   );
 };
 const mapStateToProps = (state) => ({ searchTerm: state.searchTerm });
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch) => ({
   handleSearchChange(e) {
     dispatch(setSearchTerm(e.target.value));
     dispatch(getAPIData());

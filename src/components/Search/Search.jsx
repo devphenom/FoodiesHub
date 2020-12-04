@@ -1,145 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
-import { setSearchTerm, getAPIData } from "../Redux/actionCreators";
-import Navbar from "../Navbar/Navbar";
+// import Navbar from "../Navbar/Navbar";
+import SearchCard from "./SearchCard";
+import { queryAPI, setCategory } from "../Redux/actionCreators";
 import "./Search.css";
 
-// function imagesLoaded(parentNode) {
-//   const imgElements = [...parentNode.querySelectorAll("img")];
-//   for (let i = 0; i < imgElements.length; i += 1) {
-//     const img = imgElements[i];
-//     if (!img.complete) {
-//       return false;
-//     }
-//   }
-//   return true;
-// }
-
-const MealList = (props) => {
-  // const [loading, setLoading] = useState(true);
-  const [apiData, setApiData] = useState("");
-  const [sort, setSort] = useState(true);
-  const [visible, setVisible] = useState(10);
-  console.log(apiData, props.apiData);
-
+const Search = (props) => {
+  const [list, setList] = useState([]);
   const launchGetAPI = (e) => {
     e && e.preventDefault();
     if (props.apiData) {
-      setApiData(props.apiData);
+      //   setApiData(props.apiData);
       if (!props.apiData.hasOwnProperty(props.searchTerm)) {
         props.getAPI();
       }
     }
   };
-  console.log(visible);
-
-  const loadMore = () => setVisible((prevVisible) => prevVisible + 10);
-
-  const handleSort = (arr) => {
-    setSort(!sort);
-    console.log(apiData);
-    if (sort) {
-      if (arr.length > 1) {
-        let sorted = [...arr].sort((a, b) => {
-          var nameA = a.strMeal.toUpperCase(); // ignore upper and lowercase
-          var nameB = b.strMeal.toUpperCase(); // ignore upper and lowercase
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
-          return 0;
-        });
-        setApiData(sorted);
-      }
-    } else {
-      setApiData(props.apiData);
-    }
-  };
 
   useEffect(() => {
-    let unmounted = false; // eslint-disable-line no-unused-vars
     launchGetAPI();
-    return () => (unmounted = true);
+    !props.recipeCategories.length && props.testingRed();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    // let unmounted = false; // eslint-disable-line no-unused-vars
-    setApiData(props.apiData);
-    // return () => (unmounted = true);
-  }, [props.apiData]);
-
-  // const renderSpinner = () => {
-  //   if (props.apiData.length > 0) {
-  //     if (!loading) {
-  //       return null;
-  //     }
-  //     return (
-  //       <section className="loading-spinner py-5">
-  //         <div className="container-fluid py-5">
-  //           <div className="row py-5">
-  //             <div className="col-12 text-center mx-auto py-5">
-  //               <div className="spinner">
-  //                 <h3>Loading...</h3>
-  //               </div>
-  //             </div>
-  //           </div>
-  //         </div>
-  //       </section>
-  //     );
-  //   }
-  // };
-
-  // let galleryElement;
-  // const handleLoadChange = () => setLoading(!imagesLoaded(galleryElement));
-
-  // const renderAllItems = (result) => {
-  //   if (result.length > 0) {
-  //     return result.map((i) => (
-  //       <div key={i.idMeal} className="mx-auto">
-  //         <div
-  //           className="card mx-1 my-3 shadow mealCard border-0"
-  //           style={{ width: "18rem" }}
-  //         >
-  //           <Link to={`/details/${i.idMeal}`}>
-  //             <img
-  //               src={i.strMealThumb}
-  //               className="card-img-top mealcard-img"
-  //               alt={i.strMeal}
-  //               onLoad={handleLoadChange}
-  //               onError={handleLoadChange}
-  //             />
-  //           </Link>
-  //           <div className="card-body my-2 mx-3">
-  //             <div className="row align-items-center justify-content-between mb-2">
-  //               <Link to={`/details/${i.idMeal}`}>
-  //                 <h3 className="card-title font-weight-bold mb-0 text-orange">
-  //                   {i.strMeal}
-  //                 </h3>
-  //               </Link>
-  //               <div className="">
-  //                 <i className="far fa-heart fa-2x "></i>
-  //               </div>
-  //             </div>
-  //             <div className="row align-items-center justify-content-between mt-2">
-  //               <p>Category: {i.strCategory}</p>
-  //               <p>Area: {i.strArea}</p>
-  //             </div>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     ));
-  //   } else {
-  //     return <h5 className="col-10 mx-auto text-center">No result found</h5>;
-  //   }
-  // };
 
   return (
     <div>
-      <Navbar search handleSort={handleSort} apiData={apiData} sort={sort} />
+      {/* <Navbar search /> */}
+      {/* handleSort={handleSort} apiData={apiData} sort={sort}  */}
       <section className="d-md-none">
         <div className="container-fluid py-3">
           <div className="row mx-auto align-items-center">
@@ -147,8 +35,8 @@ const MealList = (props) => {
               <i className="fas fa-filter" aria-hidden="true"></i>
             </div>
             <div
-              className={`search-item mx-2 ${!sort ? "active" : ""}`}
-              onClick={() => handleSort(apiData)}
+              className={`search-item mx-2 `} //${!sort ? "active" : ""}
+              //   onClick={() => handleSort(apiData)}
             >
               <i className="fas fa-sort-alpha-down" aria-hidden="true"></i>
             </div>
@@ -163,50 +51,35 @@ const MealList = (props) => {
                 onChange={props.handleSearchChange}
               />
             </div>
+            <div>
+              <select
+                name="category"
+                id="category"
+                onChange={props.handleFilter}
+                onBlur={props.handleFilter}
+                value={props.category}
+                disabled={!props.recipeCategories.length}
+              >
+                <option value="">Filter by Category</option>
+                {props.recipeCategories.map((category) => (
+                  <option value={category} key={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
       </section>
       {/* {renderSpinner()} */}
       <section>
         <div className="container-fluid">
+          {/* {console.log(props.allRecipe)} */}
           <div className="row py-5 mx-auto">
-            {apiData.length > 1 &&
-              apiData.slice(0, visible).map((i) => (
-                <div key={i.idMeal} className="mx-auto">
-                  <div
-                    className="card mx-1 my-3 shadow mealCard border-0"
-                    style={{ width: "18rem" }}
-                  >
-                    <Link to={`/details/${i.idMeal}`}>
-                      <img
-                        src={i.strMealThumb}
-                        className="card-img-top mealcard-img"
-                        alt={i.strMeal}
-                        // onLoad={handleLoadChange}
-                        // onError={handleLoadChange}
-                      />
-                    </Link>
-                    <div className="card-body my-2 mx-3">
-                      <div className="row align-items-center justify-content-between mb-2">
-                        <Link to={`/details/${i.idMeal}`}>
-                          <h3 className="card-title font-weight-bold mb-0 text-orange">
-                            {i.strMeal}
-                          </h3>
-                        </Link>
-                        <div className="">
-                          <i className="far fa-heart fa-2x "></i>
-                        </div>
-                      </div>
-                      <div className="row align-items-center justify-content-between mt-2">
-                        <p>Category: {i.strCategory}</p>
-                        <p>Area: {i.strArea}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            {props.allRecipe &&
+              props.allRecipe.map((i) => <SearchCard i={i} key={i.idMeal} />)}
           </div>
-          <div className="row py-5 mx-auto">
+          {/* <div className="row py-5 mx-auto">
             <div className="col-md-6 mx-auto text-center">
               {visible < apiData.length && (
                 <button
@@ -217,15 +90,6 @@ const MealList = (props) => {
                 </button>
               )}
             </div>
-          </div>
-          <div className="row mx-auto py-3"></div>
-          {/* <div
-            className="row py-5 mx-auto"
-            ref={(element) => {
-              return (galleryElement = element);
-            }}
-          >
-            {props.apiData && renderAllItems(props.apiData)}
           </div> */}
         </div>
       </section>
@@ -234,22 +98,35 @@ const MealList = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const apiData = state.dataFetched[state.searchTerm]
-    ? state.dataFetched[state.searchTerm]
-    : {};
+  let allRecipe = [];
+  let recipeCategories = [];
+  for (let key in state.allRecipe) {
+    recipeCategories.push(key);
+  }
+  if (!state.category) {
+    for (let key in state.allRecipe) {
+      let val = state.allRecipe[key];
+      allRecipe.push(...val);
+    }
+  } else {
+    allRecipe = [];
+    let val = state.allRecipe[state.category];
+    allRecipe.push(...val);
+  }
+
   return {
     searchTerm: state.searchTerm,
-    apiData,
+    allRecipe,
+    recipeCategories,
   };
 };
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  handleSearchChange(e) {
-    dispatch(setSearchTerm(e.target.value));
-    dispatch(getAPIData());
+
+const mapDispatchToProps = (dispatch) => ({
+  testingRed() {
+    dispatch(queryAPI());
   },
-  getAPI() {
-    dispatch(getAPIData());
+  handleFilter(e) {
+    dispatch(setCategory(e.target.value));
   },
 });
-
-export default connect(mapStateToProps, mapDispatchToProps)(MealList);
+export default connect(mapStateToProps, mapDispatchToProps)(Search);
