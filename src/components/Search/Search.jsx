@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 // import Navbar from "../Navbar/Navbar";
 import SearchCard from "./SearchCard";
-import { queryAPI, setCategory } from "../Redux/actionCreators";
+import { queryAPI, setCategory, setSearchTerm } from "../Redux/actionCreators";
 import "./Search.css";
 
 const Search = (props) => {
@@ -48,7 +48,7 @@ const Search = (props) => {
                 id="search meal"
                 aria-describedby="search meal"
                 value={props.searchTerm}
-                onChange={props.handleSearchChange}
+                onChange={props.handleSearchTerm}
               />
             </div>
             <div>
@@ -128,5 +128,9 @@ const mapDispatchToProps = (dispatch) => ({
   handleFilter(e) {
     dispatch(setCategory(e.target.value));
   },
+  handleSearchTerm(e) {
+    dispatch(setSearchTerm(e.target.value));
+  },
 });
+
 export default connect(mapStateToProps, mapDispatchToProps)(Search);
