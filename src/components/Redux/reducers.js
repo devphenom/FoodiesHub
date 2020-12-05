@@ -4,6 +4,7 @@ import {
   ADD_ALL_RECIPE,
   ADD_RECIPE_DETAILS,
   SET_CATEGORY,
+  SET_VISIBLE,
 } from "./actions";
 
 const searchTerm = (state = "", action) => {
@@ -15,6 +16,13 @@ const searchTerm = (state = "", action) => {
 
 const category = (state = "", action) => {
   if (action.type === SET_CATEGORY) {
+    return action.payload;
+  }
+  return state;
+};
+
+const visible = (state = 30, action) => {
+  if (action.type === SET_VISIBLE) {
     return action.payload;
   }
   return state;
@@ -41,6 +49,7 @@ const fetchedRecipe = (state = {}, action) => {
 const rootReducer = combineReducers({
   searchTerm,
   category,
+  visible,
   allRecipe,
   fetchedRecipe,
 });

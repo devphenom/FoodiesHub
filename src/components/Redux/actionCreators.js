@@ -3,7 +3,8 @@ import {
   SET_SEARCH_TERM,
   SET_CATEGORY,
   ADD_ALL_RECIPE,
-  ADD_RECIPE_DETAILS,
+  SET_VISIBLE,
+  // ADD_RECIPE_DETAILS,
 } from "./actions";
 
 // SearchTerm
@@ -16,6 +17,22 @@ export function setCategory(categories) {
   return { type: SET_CATEGORY, payload: categories };
 }
 
+// Visible
+export function setVisible(visible) {
+  return { type: SET_VISIBLE, payload: visible };
+}
+// Visible Calculation
+export function setSetVisible(visible) {
+  return (dispatch, getState) => {
+    if (visible) {
+      console.log(visible);
+      let visibleState = getState().visible;
+      dispatch(setVisible(visible + visibleState));
+    } else {
+      dispatch(setVisible(30));
+    }
+  };
+}
 // Add all Recipe
 export function addAllRecipe(recipeCategory, recipes) {
   return { type: ADD_ALL_RECIPE, payload: { recipeCategory, recipes } };

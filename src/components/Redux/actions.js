@@ -1,4 +1,5 @@
 export const SET_SEARCH_TERM = "SET_SEARCH_TERM";
 export const SET_CATEGORY = "SET_CATEGORY";
+export const SET_VISIBLE = "SET_VISIBLE";
 export const ADD_ALL_RECIPE = "ADD_ALL_RECIPE";
 export const ADD_RECIPE_DETAILS = "ADD_RECIPE_DETAILS";

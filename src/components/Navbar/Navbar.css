@@ -77,13 +77,13 @@ nav button {
 .search-input::placeholder {
   color: rgb(187, 187, 187) !important;
   box-shadow: none !important;
-  font-size: normal;
-  z-index: -111111111111111111111 !important;
-  font-family: "Font Awesome 5 Free";
-  font-weight: 600;
 }
 .search-input:focus {
   box-shadow: none !important;
   outline: none !important;
   border-bottom: 2px solid var(--orange) !important;
+}
+.input-group-text {
+  background-color: transparent !important;
+  color: var(--orange) !important;
 }

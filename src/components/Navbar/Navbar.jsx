@@ -2,46 +2,59 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { setSearchTerm, getAPIData } from "../Redux/actionCreators";
+import { setSearchTerm, setCategory } from "../Redux/actionCreators";
 import "./Navbar.css";
 
-const Navbar = ({
-  search,
-  sort,
-  handleSort,
-  apiData,
-  searchTerm,
-  handleSearchChange,
-}) => {
+const Navbar = (props) => {
   let navItems;
-  if (search) {
+  if (props.search) {
     navItems = (
       <div
         id="navbarLinks"
         className="navbar-collapse collapse text-center text-mineshaft"
       >
         <ul className="navbar-nav ml-auto mr-5 align-items-center">
-          <li className="search-item mx-2">
-            <i className="fas fa-filter" aria-hidden="true"></i>
-          </li>
           <li
-            className={`search-item mx-2 ${!sort ? "active" : ""}`}
+            className={`search-item mx-2 ${!props.sort ? "active" : ""}`}
             onClick={() => {
-              handleSort(apiData);
+              props.handleSort(props.apiData);
             }}
           >
             <i className="fas fa-sort-alpha-down" aria-hidden="true"></i>
           </li>
+          <li className="mx-2">
+            <select
+              className="form-control"
+              id="category"
+              placeholder="Filter by Category"
+              onChange={props.handleFilter}
+              onBlur={props.handleFilter}
+              value={props.category}
+              disabled={!props.recipeCategories.length}
+            >
+              <option value="">Filter by Category</option>
+              {props.recipeCategories.map((category) => (
+                <option value={category} key={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </li>
           <li className=" mx-2">
-            <div className="form-group">
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text" id="basic-addon1">
+                  @
+                </span>
+              </div>
               <input
                 type="text"
-                className="form-control form-control-lg input"
-                id="search meal"
-                aria-describedby="search meal"
+                className="form-control search-input"
+                value={props.searchTerm}
+                onChange={props.handleSearchTerm}
                 placeholder="search meal..."
-                value={searchTerm}
-                onChange={handleSearchChange}
+                aria-label="search meal"
+                aria-describedby="search meal"
               />
             </div>
           </li>
@@ -88,7 +101,7 @@ const Navbar = ({
     );
 
   return (
-    <nav className="navbar navbar-expand-sm navbar-light shadow-sm px-lg-3 scrolling-navbar">
+    <nav className="navbar navbar-expand-sm navbar-light shadow-sm px-lg-3  py-3 scrolling-navbar">
       {/* <!-- navbar brand --> */}
       <Link to="/" className="navbar-brand text-orange ml-md-5">
         <strong>FoodiesHUB</strong>
@@ -97,14 +110,23 @@ const Navbar = ({
     </nav>
   );
 };
-const mapStateToProps = (state) => ({ searchTerm: state.searchTerm });
+const mapStateToProps = (state) => {
+  let recipeCategories = [];
+  for (let key in state.allRecipe) {
+    recipeCategories.push(key);
+  }
+
+  return {
+    searchTerm: state.searchTerm,
+    recipeCategories,
+  };
+};
 const mapDispatchToProps = (dispatch) => ({
-  handleSearchChange(e) {
+  handleSearchTerm(e) {
     dispatch(setSearchTerm(e.target.value));
-    dispatch(getAPIData());
   },
-  getAPI() {
-    dispatch(getAPIData());
+  handleFilter(e) {
+    dispatch(setCategory(e.target.value));
   },
 });
 

@@ -17,7 +17,7 @@ const SearchCard = ({ i }) => (
         />
       </Link>
       <div className="card-body my-2 mx-3">
-        <div className="row align-items-center justify-content-between mb-2">
+        <div className="d-flex align-items-center justify-content-between mb-2">
           <Link to={`/details/${i.idMeal}`}>
             <h3 className="card-title font-weight-bold mb-0 text-orange">
               {i.strMeal}
@@ -27,10 +27,7 @@ const SearchCard = ({ i }) => (
             <i className="far fa-heart fa-2x "></i>
           </div>
         </div>
-        <div className="row align-items-center justify-content-between mt-2">
-          <p>Category: {i.strCategory}</p>
-          <p>Area: {i.strArea}</p>
-        </div>
+        <div className="row align-items-center justify-content-between mt-2"></div>
       </div>
     </div>
   </div>
