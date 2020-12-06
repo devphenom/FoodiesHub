@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import Navbar from "../Navbar/Navbar";
@@ -12,14 +12,49 @@ import {
 import "./Search.css";
 
 const Search = (props) => {
+  const [recipeArr, setRecipeArr] = useState(props.allRecipe);
+  const [sort, setSort] = useState(true);
+
+  const handleSort = (arr) => {
+    setSort(!sort);
+    if (sort) {
+      if (arr.length > 1) {
+        let sorted = [...arr].sort((a, b) => {
+          var nameA = a.strMeal.toUpperCase(); // ignore upper and lowercase
+          var nameB = b.strMeal.toUpperCase(); // ignore upper and lowercase
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          return 0;
+        });
+        setRecipeArr(sorted);
+      }
+    } else {
+      setRecipeArr(props.allRecipe);
+    }
+  };
+
   useEffect(() => {
-    !props.recipeCategories.length && props.testingRed();
+    !props.recipeCategories.length && props.fetchData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    // let unmounted = false; // eslint-disable-line no-unused-vars
+    setRecipeArr(props.allRecipe);
+    // return () => (unmounted = true);
+  }, [props.allRecipe]);
 
   return (
     <div>
-      <Navbar search />
-      {/* handleSort={handleSort} apiData={apiData} sort={sort}  */}
+      <Navbar
+        search
+        handleSort={handleSort}
+        recipeArr={recipeArr}
+        sort={sort}
+      />
       <section className="d-md-none">
         <div className="container-fluid py-3">
           <div className="row mx-auto align-items-center">
@@ -44,10 +79,8 @@ const Search = (props) => {
               </div>
               <div className="col-md-4 ml-auto d-flex">
                 <div
-                  className={`search-item mr-2 ${!props.sort ? "active" : ""}`}
-                  onClick={() => {
-                    props.handleSort(props.apiData);
-                  }}
+                  className={`search-item mx-2 ${!sort ? "active" : ""}`}
+                  onClick={() => handleSort(recipeArr)}
                 >
                   <i className="fas fa-sort-alpha-down" aria-hidden="true"></i>
                 </div>
@@ -75,10 +108,9 @@ const Search = (props) => {
       {/* {renderSpinner()} */}
       <section>
         <div className="container-fluid">
-          {/* {console.log(props.allRecipe)} */}
           <div className="row py-5 mx-auto">
-            {props.allRecipe &&
-              props.allRecipe
+            {recipeArr &&
+              recipeArr
                 .filter(
                   (meal) =>
                     `${meal.strMeal}`
@@ -90,7 +122,7 @@ const Search = (props) => {
           </div>
           <div className="row py-5 mx-auto">
             <div className="col-md-6 mx-auto text-center">
-              {props.visible < props.allRecipe.length && (
+              {props.visible < recipeArr.length && (
                 <button
                   className="btn btn-outline-orange mx-auto text-center rounded-pill px-4 py-2"
                   onClick={props.loadMore}
@@ -132,7 +164,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  testingRed() {
+  fetchData() {
     dispatch(queryAPI());
   },
   handleFilter(e) {

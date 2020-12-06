@@ -19,9 +19,9 @@ const SearchCard = ({ i }) => (
       <div className="card-body my-2 mx-3">
         <div className="d-flex align-items-center justify-content-between mb-2">
           <Link to={`/details/${i.idMeal}`}>
-            <h3 className="card-title font-weight-bold mb-0 text-orange">
+            <h5 className="card-title font-weight-bold mb-0 text-orange">
               {i.strMeal}
-            </h3>
+            </h5>
           </Link>
           <div className="">
             <i className="far fa-heart fa-2x "></i>

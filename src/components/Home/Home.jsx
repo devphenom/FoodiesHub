@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { setSearchTerm, setCategory } from "../Redux/actionCreators";
-// import Navbar from "../Navbar/Navbar";
+import Navbar from "../Navbar/Navbar";
 import "./Home.css";
 
 const Home = (props) => {
@@ -14,7 +14,7 @@ const Home = (props) => {
 
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <header className="header d-flex align-items-center py-2">
         <div className="container-fluid">
           <div className="row align-items-center">
