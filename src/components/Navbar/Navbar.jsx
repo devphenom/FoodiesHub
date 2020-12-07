@@ -24,7 +24,7 @@ const Navbar = (props) => {
           </li>
           <li className="mx-2">
             <select
-              className="form-control"
+              className="form-control search-input"
               id="category"
               placeholder="Filter by Category"
               onChange={props.handleFilter}

@@ -48,7 +48,6 @@ export function queryAPI() {
     const strCategories = await categories.map(
       ({ strCategory }) => strCategory
     );
-    console.log(strCategories);
     strCategories.forEach((category) => {
       axios
         .get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`)

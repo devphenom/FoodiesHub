@@ -6,17 +6,6 @@ import { setSearchTerm, getAPIData } from "../Redux/actionCreators";
 import Navbar from "../Navbar/Navbar";
 import "./Search.css";
 
-// function imagesLoaded(parentNode) {
-//   const imgElements = [...parentNode.querySelectorAll("img")];
-//   for (let i = 0; i < imgElements.length; i += 1) {
-//     const img = imgElements[i];
-//     if (!img.complete) {
-//       return false;
-//     }
-//   }
-//   return true;
-// }
-
 const MealList = (props) => {
   // const [loading, setLoading] = useState(true);
   const [apiData, setApiData] = useState("");

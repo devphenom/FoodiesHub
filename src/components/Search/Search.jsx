@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import { Spinner } from "react-bootstrap";
 
 import Navbar from "../Navbar/Navbar";
 import SearchCard from "./SearchCard";
@@ -10,11 +11,39 @@ import {
   setSetVisible,
 } from "../Redux/actionCreators";
 import "./Search.css";
+import { imagesLoaded } from "./ImageLoading";
 
 const Search = (props) => {
-  const [recipeArr, setRecipeArr] = useState(props.allRecipe);
+  const [recipeArr, setRecipeArr] = useState("");
   const [sort, setSort] = useState(true);
+  const [loading, setLoading] = useState(true);
 
+  // Imageloading
+  const [imgLoading, setImgLoading] = useState(true);
+  let galleryElement;
+  const handleImageChange = () => setImgLoading(!imagesLoaded(galleryElement));
+  const renderSpinner = () => {
+    if (imgLoading) {
+      return (
+        <section className="loading-spinner py-5">
+          <div className="container-fluid py-5">
+            <div className="row py-5 justify-content-center align-items-center">
+              <div className="col-12 text-center mx-auto py-5">
+                <h3>Loading Recipe Thumbnails...</h3>
+                <div className="spinner">
+                  <div></div>
+                  <div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+    return null;
+  };
+
+  // sort
   const handleSort = (arr) => {
     setSort(!sort);
     if (sort) {
@@ -37,16 +66,36 @@ const Search = (props) => {
     }
   };
 
+  // generate all recipe
   useEffect(() => {
     !props.recipeCategories.length && props.fetchData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // reset recipe to state everytime recipeReduxState changes
   useEffect(() => {
-    // let unmounted = false; // eslint-disable-line no-unused-vars
     setRecipeArr(props.allRecipe);
-    // return () => (unmounted = true);
+    setLoading(false);
+    setSort(true);
   }, [props.allRecipe]);
 
+  // check if still fetching api
+  if (loading) {
+    return (
+      <div
+        className="d-flex align-items-center justify-content-center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Spinner
+          animation="border"
+          variant="warning"
+          style={{ width: "10rem", height: "10rem" }}
+          role="status"
+        >
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      </div>
+    );
+  }
   return (
     <div>
       <Navbar
@@ -108,7 +157,13 @@ const Search = (props) => {
       {/* {renderSpinner()} */}
       <section>
         <div className="container-fluid">
-          <div className="row py-5 mx-auto">
+          <div
+            className="row py-5 mx-auto"
+            ref={(element) => {
+              galleryElement = element;
+            }}
+          >
+            {renderSpinner()}
             {recipeArr &&
               recipeArr
                 .filter(
@@ -118,7 +173,13 @@ const Search = (props) => {
                       .indexOf(props.searchTerm.toUpperCase()) >= 0
                 )
                 .slice(0, props.visible)
-                .map((meal) => <SearchCard i={meal} key={meal.idMeal} />)}
+                .map((meal) => (
+                  <SearchCard
+                    i={meal}
+                    key={meal.idMeal}
+                    handleImageChange={handleImageChange}
+                  />
+                ))}
           </div>
           <div className="row py-5 mx-auto">
             <div className="col-md-6 mx-auto text-center">
