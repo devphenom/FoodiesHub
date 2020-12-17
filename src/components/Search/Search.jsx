@@ -74,9 +74,10 @@ const Search = (props) => {
   // reset recipe to state everytime recipeReduxState changes
   useEffect(() => {
     setRecipeArr(props.allRecipe);
-    setLoading(false);
+    recipeArr && setLoading(false);
+    // console.log(props.allRecipe);
     setSort(true);
-  }, [props.allRecipe]);
+  }, [props.allRecipe, recipeArr]);
 
   // check if still fetching api
   if (loading) {
@@ -97,7 +98,8 @@ const Search = (props) => {
     );
   }
   return (
-    <div>
+    <>
+      {/* {setLoading(false)} */}
       <Navbar
         search
         handleSort={handleSort}
@@ -195,7 +197,7 @@ const Search = (props) => {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 };
 

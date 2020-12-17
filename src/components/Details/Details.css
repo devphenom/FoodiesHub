@@ -4,16 +4,52 @@
 .details-img {
   border-bottom-right-radius: 30px;
   border-bottom-left-radius: 30px;
-  height: 200px !important;
-  width: 100% !important;
+  height: 300px;
+  width: 100%;
   overflow: hidden;
+  position: relative;
+}
+.back-btn {
+  background-color: var(--orange);
+  color: #fff;
+  padding: 10px 20px;
+  position: absolute;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 4px gray;
+  left: 20px;
+  top: 20px;
+  font-weight: bold;
+  font-size: 1rem;
 }
 .det-p {
-  margin: 2px auto !important;
-  padding: 5px 10px;
-  background-color: var(--foodiesLightGreen);
+  margin: 10px 10px !important;
+  padding: 5px 15px;
+  background-color: #fff6f6;
   border-radius: 10px;
+  box-shadow: 0px 0px 10px 1px rgb(204, 204, 204);
+  font-size: 0.8rem;
 }
 .det-instr {
   line-height: 1.8rem;
+}
+.instruction-col {
+  margin: 20px;
+  border-radius: 20px;
+  padding: 0 !important;
+  box-shadow: 0px 0px 15px 1px var(--dustygray);
+}
+
+.instr-head {
+  display: flex;
+  align-items: center;
+  border-radius: 20px 20px 0 0;
+  padding: 10px;
+  background-color: var(--orange);
+  color: white;
+}
+
+.carousel-box {
+  height: 200px;
+  margin: 14px;
+  padding-bottom: 0px !important;
 }
