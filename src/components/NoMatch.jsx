@@ -1,14 +1,26 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@reach/router";
 
 const NoMatch = () => {
   return (
     <header>
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-12">
-            <h1> Opps! Page not found</h1>
-            <Link to="/">Go to homepage</Link>
+      <div className="container-fluid py-5">
+        <div className="row mx-auto align-items-center">
+          <div className="col-md-6 text-center">
+            <h1 className="display-1">
+              {" "}
+              Opps! <br /> Page not found
+            </h1>
+            <Link to="/" className="btn btn-outline-orange px-4 py-3">
+              Go to homepage
+            </Link>
+          </div>
+          <div className="col-md-6 text-center">
+            <img
+              src={require("../imgs/breakfast.svg")}
+              alt="Error"
+              className="img-fluid"
+            />
           </div>
         </div>
       </div>

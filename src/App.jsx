@@ -21,7 +21,7 @@ const App = () => {
           <Home path="/" />
           <Search path="/search" />
           <Details path="/details/:id" />
-          {/* <NoMatch /> */}
+          <NoMatch default />
         </Router>
         {/* <Footer /> */}
       </div>
