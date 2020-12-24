@@ -6,6 +6,13 @@ import { Link } from "@reach/router";
 import { fetchRecipeDetails } from "../Redux/actionCreators";
 import SpinnerDiv from "../SpinnerDiv";
 import "./Details.css";
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height,
+  };
+}
 
 const Details = ({ recipe, fetchAPI }) => {
   // visible ingredients
@@ -47,7 +54,11 @@ const Details = ({ recipe, fetchAPI }) => {
   useEffect(() => {
     fetchAPI();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
+  useEffect(() => {
+    if (getWindowDimensions().width >= 426) {
+      setVisibleIng(ingredients.length);
+    }
+  }, [ingredients]);
   // spinner
   if (!recipe) {
     return <SpinnerDiv />;
@@ -66,7 +77,10 @@ const Details = ({ recipe, fetchAPI }) => {
     <section>
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-6 p-0">
+          <div
+            className="col-md-6 px-0 pr-md-3"
+            style={{ alignSelf: "stretch" }}
+          >
             <div className="details-img">
               <img src={strMealThumb} className="img-fluid " alt="" />
             </div>
@@ -78,7 +92,7 @@ const Details = ({ recipe, fetchAPI }) => {
             </Link>
           </div>
           {/* Name, Category, Area, Tags, Ingredients */}
-          <div className="col-md-6" style={{ backgroundColor: "#FFF6F6" }}>
+          <div className="col-md-6 light-bg">
             <h2 className="font-weight-bold text-orange p-2">{strMeal}</h2>
             <div className="row p-2">
               <p className="det-p">
@@ -103,25 +117,26 @@ const Details = ({ recipe, fetchAPI }) => {
               <div className="col-12 instr-head">
                 <h4 className="font-weight-bold">Ingredients:</h4>
               </div>
-              {ingredients.slice(0, visibleIng).map((ingredient, index) => (
-                <div
-                  key={index}
-                  className="col-6 col-md text-center mx-auto"
-                  data-index={index}
-                >
-                  <img
-                    src={`https://www.themealdb.com/images/ingredients/${ingredient
-                      .split(" ")
-                      .join("%20")}-Small.png`}
-                    alt=""
-                    className="img-fluid"
-                  />
-                  <p className="">{`${ingredient} - ${
-                    recipe[`strMeasure${(index += 1)}`]
-                  }`}</p>
-                </div>
-              ))}
-
+              <div id="horizontal-nav">
+                {ingredients.slice(0, visibleIng).map((ingredient, index) => (
+                  <div
+                    key={index}
+                    className="col-6 col-md-6 text-center mx-auto"
+                    data-index={index}
+                  >
+                    <img
+                      src={`https://www.themealdb.com/images/ingredients/${ingredient
+                        .split(" ")
+                        .join("%20")}-Small.png`}
+                      alt=""
+                      className="img-fluid"
+                    />
+                    <p className="">{`${ingredient} - ${
+                      recipe[`strMeasure${(index += 1)}`]
+                    }`}</p>
+                  </div>
+                ))}
+              </div>
               <div
                 className={`col-12 mx-auto text-center my-3 ${
                   visibleIng !== 4 && "d-none"
@@ -137,9 +152,9 @@ const Details = ({ recipe, fetchAPI }) => {
           </div>
         </div>
         {/* Row 2 */}
-        <div className="row" style={{ backgroundColor: "#FFF6F6" }}>
+        <div className="row light-bg">
           {/* Procedure/ Instructions */}
-          <div className="col-md-6 instruction-col">
+          <div className="col-md-5 instruction-col">
             <div className="instr-head">
               <h4 className="font-weight-bold">Procedures:</h4>
               <h4 className="ml-auto font-weight-bold">{`${index + 1} /  ${
@@ -171,7 +186,11 @@ const Details = ({ recipe, fetchAPI }) => {
                 <h4 className="font-weight-bold">Video:</h4>
               </div>
               <div
-                className="embed-responsive embed-responsive-4by3"
+                className={`embed-responsive ${
+                  getWindowDimensions().width >= 426
+                    ? "embed-responsive-21by9"
+                    : "embed-responsive-4by3"
+                }`}
                 style={{ borderRadius: " 0 0 20px 20px" }}
               >
                 <iframe

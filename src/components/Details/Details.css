@@ -4,10 +4,13 @@
 .details-img {
   border-bottom-right-radius: 30px;
   border-bottom-left-radius: 30px;
-  height: 300px;
+  height: 400px;
   width: 100%;
   overflow: hidden;
   position: relative;
+}
+.light-bg {
+  background-color: "#FFF6F6";
 }
 .back-btn {
   background-color: var(--orange);
@@ -15,7 +18,7 @@
   padding: 10px 20px;
   position: absolute;
   border-radius: 10px;
-  box-shadow: 0px 0px 5px 4px gray;
+  box-shadow: 0px 0px 5px 2px var(--tuftbrush);
   left: 20px;
   top: 20px;
   font-weight: bold;
@@ -36,7 +39,7 @@
   margin: 20px;
   border-radius: 20px;
   padding: 0 !important;
-  box-shadow: 0px 0px 15px 1px var(--dustygray);
+  box-shadow: 0px 2px 8px 1px rgb(199, 199, 199);
 }
 
 .instr-head {
@@ -49,7 +52,22 @@
 }
 
 .carousel-box {
-  height: 200px;
+  /* height: 200px; */
   margin: 14px;
   padding-bottom: 0px !important;
+}
+#horizontal-nav {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media screen and (min-width: 426px) {
+  #horizontal-nav {
+    overflow: auto;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+  .light-bg {
+    background-color: none;
+  }
 }
