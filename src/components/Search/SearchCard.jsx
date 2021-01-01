@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "@reach/router";
 
-const SearchCard = ({ i, handleImageChange }) => (
+const SearchCard = ({ i }) => (
   <div className="mx-auto">
     <div
       className="card mx-1 my-3 shadow mealCard border-0"
@@ -12,8 +12,7 @@ const SearchCard = ({ i, handleImageChange }) => (
           src={i.strMealThumb}
           className="card-img-top mealcard-img"
           alt={i.strMeal}
-          onLoad={handleImageChange}
-          onError={handleImageChange}
+          loading="lazy"
         />
       </Link>
       <div className="card-body my-2 mx-3">

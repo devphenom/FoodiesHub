@@ -81,12 +81,3 @@ export function fetchRecipeDetails(idMeal) {
     // console.log(response);
   };
 }
-
-// console.log(abc);
-// dispatch(addAllRecipe(abc));
-// strCategories.forEach((category) => {
-// const strccc = Promise.all(strCat).then((strc) => strc.map());
-//   axios
-//     .get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`)
-//     .then(({ data }) => dispatch(addAllRecipe(category, data.meals)));
-// });

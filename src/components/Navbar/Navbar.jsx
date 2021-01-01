@@ -124,24 +124,5 @@ const Navbar = (props) => {
     </nav>
   );
 };
-// const mapStateToProps = (state) => {
-//   let recipeCategories = [];
-//   for (let key in state.allRecipe) {
-//     recipeCategories.push(key);
-//   }
-
-//   return {
-//     searchTerm: state.searchTerm,
-//     recipeCategories,
-//   };
-// };
-// const mapDispatchToProps = (dispatch) => ({
-//   handleSearchTerm(e) {
-//     dispatch(setSearchTerm(e.target.value));
-//   },
-//   handleFilter(e) {
-//     dispatch(setCategory(e.target.value));
-//   },
-// });
 
 export default Navbar;

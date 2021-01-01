@@ -6,6 +6,8 @@ import { Link } from "@reach/router";
 import { fetchRecipeDetails } from "../Redux/actionCreators";
 import SpinnerDiv from "../SpinnerDiv";
 import "./Details.css";
+
+// getWindows dimension to apply styles
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
   return {
@@ -60,7 +62,7 @@ const Details = ({ id }) => {
   }
   // useEffect fetch recipe api
   useEffect(() => {
-    fetchAPI();
+    if (!recipe) fetchAPI();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (getWindowDimensions().width >= 426) {
@@ -137,6 +139,7 @@ const Details = ({ id }) => {
                         .split(" ")
                         .join("%20")}-Small.png`}
                       alt=""
+                      loading="lazy"
                       className="img-fluid"
                     />
                     <p className="">{`${ingredient} - ${

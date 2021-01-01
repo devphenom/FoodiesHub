@@ -11,7 +11,6 @@ import {
   setSetVisible,
 } from "../Redux/actionCreators";
 import "./Search.css";
-import { imagesLoaded } from "./ImageLoading";
 
 const Search = (props) => {
   // Redux Hooks
@@ -44,31 +43,6 @@ const Search = (props) => {
   const [sort, setSort] = useState(true);
   const [loading, setLoading] = useState(true);
 
-  // Imageloading
-  const [imgLoading, setImgLoading] = useState(true);
-  let galleryElement;
-  const handleImageChange = () => setImgLoading(!imagesLoaded(galleryElement));
-  const renderSpinner = () => {
-    if (imgLoading) {
-      return (
-        <section className="loading-spinner py-5">
-          <div className="container-fluid py-5">
-            <div className="row py-5 justify-content-center align-items-center">
-              <div className="col-12 text-center mx-auto py-5">
-                <h3>Loading Recipe Thumbnails...</h3>
-                <div className="spinner">
-                  <div></div>
-                  <div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      );
-    }
-    return null;
-  };
-
   // sort
   const handleSort = (arr) => {
     setSort(!sort);
@@ -86,10 +60,9 @@ const Search = (props) => {
           return 0;
         });
         setRecipeArr(sorted);
-        console.log(sorted, arr);
       }
     } else {
-      setRecipeArr(arr);
+      setRecipeArr(func(allRecipe, category));
     }
   };
 
@@ -98,8 +71,8 @@ const Search = (props) => {
     !categories && fetchData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // reset recipe to state everytime recipeReduxState changes
-  useEffect(() => {
+  // function
+  const func = (allRecipe, caegory) => {
     let fetchedRecipe = [];
     // const { allRecipe } = allRecipe;
     if (allRecipe) {
@@ -122,9 +95,12 @@ const Search = (props) => {
         });
       }
     }
-
-    setRecipeArr(fetchedRecipe);
-    recipeArr && setLoading(false);
+    return fetchedRecipe;
+  };
+  // reset recipe to state everytime recipeReduxState changes
+  useEffect(() => {
+    setRecipeArr(func(allRecipe, category));
+    allRecipe && setLoading(false);
     // console.log();
     setSort(true);
   }, [category, allRecipe]); //eslint-disable-line react-hooks/exhaustive-deps
@@ -207,16 +183,9 @@ const Search = (props) => {
           </div>
         </div>
       </section>
-      {/* {renderSpinner()} */}
       <section>
         <div className="container-fluid">
-          <div
-            className="row py-5 mx-auto"
-            ref={(element) => {
-              galleryElement = element;
-            }}
-          >
-            {renderSpinner()}
+          <div className="row py-5 mx-auto">
             {recipeArr &&
               recipeArr
                 .filter(
@@ -226,13 +195,7 @@ const Search = (props) => {
                       .indexOf(searchTerm.toUpperCase()) >= 0
                 )
                 .slice(0, visible)
-                .map((meal) => (
-                  <SearchCard
-                    i={meal}
-                    key={meal.idMeal}
-                    handleImageChange={handleImageChange}
-                  />
-                ))}
+                .map((meal) => <SearchCard i={meal} key={meal.idMeal} />)}
           </div>
           <div className="row py-5 mx-auto">
             <div className="col-md-6 mx-auto text-center">
@@ -251,47 +214,5 @@ const Search = (props) => {
     </>
   );
 };
-
-// const mapStateToProps = (state) => {
-//   let allRecipe = [];
-//   let recipeCategories = [];
-//   for (let key in state.allRecipe) {
-//     recipeCategories.push(key);
-//   }
-//   if (!state.category) {
-//     for (let key in state.allRecipe) {
-//       let val = state.allRecipe[key];
-//       allRecipe.push(...val);
-//     }
-//   } else {
-//     allRecipe = [];
-//     let val = state.allRecipe[state.category];
-//     allRecipe.push(...val);
-//   }
-
-//   return {
-//     searchTerm: state.searchTerm,
-//     allRecipe,
-//     recipeCategories,
-//     visible: state.visible,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => ({
-//   fetchData() {
-//     dispatch(queryAPI());
-//   },
-//   handleFilter(e) {
-//     dispatch(setCategory(e.target.value));
-//     dispatch(setSetVisible());
-//   },
-//   handleSearchTerm(e) {
-//     dispatch(setSearchTerm(e.target.value));
-//     dispatch(setSetVisible());
-//   },
-//   loadMore() {
-//     dispatch(setSetVisible(20));
-//   },
-// });
 
 export default Search;
