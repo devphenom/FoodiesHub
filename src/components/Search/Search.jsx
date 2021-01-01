@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
+import React, { useState, useEffect, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "react-bootstrap";
 
 import Navbar from "../Navbar/Navbar";
@@ -14,6 +14,32 @@ import "./Search.css";
 import { imagesLoaded } from "./ImageLoading";
 
 const Search = (props) => {
+  // Redux Hooks
+  const dispatch = useDispatch();
+  const searchTerm = useSelector((state) => state.searchTerm);
+  const visible = useSelector((state) => state.visible);
+  const category = useSelector((state) => state.category);
+  const categories = useSelector((state) => state.allRecipe.categories);
+  const allRecipe = useSelector((state) => state.allRecipe.allRecipe);
+
+  const fetchData = useCallback(() => dispatch(queryAPI()), [dispatch]);
+  const handleFilter = useCallback(
+    (e) => {
+      dispatch(setCategory(e.target.value));
+      dispatch(setSetVisible());
+    },
+    [dispatch]
+  );
+  const handleSearchTerm = useCallback(
+    (e) => {
+      dispatch(setSearchTerm(e.target.value));
+      dispatch(setSetVisible());
+    },
+    [dispatch]
+  );
+  const loadMore = useCallback(() => dispatch(setSetVisible(20)), [dispatch]);
+
+  // React state
   const [recipeArr, setRecipeArr] = useState("");
   const [sort, setSort] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -60,24 +86,48 @@ const Search = (props) => {
           return 0;
         });
         setRecipeArr(sorted);
+        console.log(sorted, arr);
       }
     } else {
-      setRecipeArr(props.allRecipe);
+      setRecipeArr(arr);
     }
   };
 
   // generate all recipe
   useEffect(() => {
-    !props.recipeCategories.length && props.fetchData();
+    !categories && fetchData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // reset recipe to state everytime recipeReduxState changes
   useEffect(() => {
-    setRecipeArr(props.allRecipe);
+    let fetchedRecipe = [];
+    // const { allRecipe } = allRecipe;
+    if (allRecipe) {
+      if (category) {
+        allRecipe.forEach((obj) => {
+          for (let key in obj) {
+            if (key === category) {
+              let val = obj[key];
+              fetchedRecipe.push(...val);
+            }
+          }
+        });
+      } else {
+        fetchedRecipe = [];
+        allRecipe.forEach((obj) => {
+          for (let key in obj) {
+            let val = obj[key];
+            fetchedRecipe.push(...val);
+          }
+        });
+      }
+    }
+
+    setRecipeArr(fetchedRecipe);
     recipeArr && setLoading(false);
-    // console.log(props.allRecipe);
+    // console.log();
     setSort(true);
-  }, [props.allRecipe, recipeArr]);
+  }, [category, allRecipe]); //eslint-disable-line react-hooks/exhaustive-deps
 
   // check if still fetching api
   if (loading) {
@@ -120,8 +170,8 @@ const Search = (props) => {
                   <input
                     type="text"
                     className="form-control search-input search-input-mobile"
-                    value={props.searchTerm}
-                    onChange={props.handleSearchTerm}
+                    value={searchTerm}
+                    onChange={handleSearchTerm}
                     placeholder="search meal..."
                     aria-label="search meal"
                     aria-describedby="search meal"
@@ -139,17 +189,18 @@ const Search = (props) => {
                   className="form-control"
                   id="category"
                   placeholder="Filter by Category"
-                  onChange={props.handleFilter}
-                  onBlur={props.handleFilter}
-                  value={props.category}
-                  disabled={!props.recipeCategories.length}
+                  onChange={handleFilter}
+                  onBlur={handleFilter}
+                  value={category}
+                  // disabled={!categories.length}
                 >
                   <option value="">Filter by Category</option>
-                  {props.recipeCategories.map((category) => (
-                    <option value={category} key={category}>
-                      {category}
-                    </option>
-                  ))}
+                  {categories &&
+                    categories.map((category) => (
+                      <option value={category} key={category}>
+                        {category}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
@@ -172,9 +223,9 @@ const Search = (props) => {
                   (meal) =>
                     `${meal.strMeal}`
                       .toUpperCase()
-                      .indexOf(props.searchTerm.toUpperCase()) >= 0
+                      .indexOf(searchTerm.toUpperCase()) >= 0
                 )
-                .slice(0, props.visible)
+                .slice(0, visible)
                 .map((meal) => (
                   <SearchCard
                     i={meal}
@@ -185,10 +236,10 @@ const Search = (props) => {
           </div>
           <div className="row py-5 mx-auto">
             <div className="col-md-6 mx-auto text-center">
-              {props.visible < recipeArr.length && (
+              {visible < recipeArr.length && (
                 <button
                   className="btn btn-outline-orange mx-auto text-center rounded-pill px-4 py-2"
-                  onClick={props.loadMore}
+                  onClick={loadMore}
                 >
                   SHOW MORE
                 </button>
@@ -201,46 +252,46 @@ const Search = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  let allRecipe = [];
-  let recipeCategories = [];
-  for (let key in state.allRecipe) {
-    recipeCategories.push(key);
-  }
-  if (!state.category) {
-    for (let key in state.allRecipe) {
-      let val = state.allRecipe[key];
-      allRecipe.push(...val);
-    }
-  } else {
-    allRecipe = [];
-    let val = state.allRecipe[state.category];
-    allRecipe.push(...val);
-  }
+// const mapStateToProps = (state) => {
+//   let allRecipe = [];
+//   let recipeCategories = [];
+//   for (let key in state.allRecipe) {
+//     recipeCategories.push(key);
+//   }
+//   if (!state.category) {
+//     for (let key in state.allRecipe) {
+//       let val = state.allRecipe[key];
+//       allRecipe.push(...val);
+//     }
+//   } else {
+//     allRecipe = [];
+//     let val = state.allRecipe[state.category];
+//     allRecipe.push(...val);
+//   }
 
-  return {
-    searchTerm: state.searchTerm,
-    allRecipe,
-    recipeCategories,
-    visible: state.visible,
-  };
-};
+//   return {
+//     searchTerm: state.searchTerm,
+//     allRecipe,
+//     recipeCategories,
+//     visible: state.visible,
+//   };
+// };
 
-const mapDispatchToProps = (dispatch) => ({
-  fetchData() {
-    dispatch(queryAPI());
-  },
-  handleFilter(e) {
-    dispatch(setCategory(e.target.value));
-    dispatch(setSetVisible());
-  },
-  handleSearchTerm(e) {
-    dispatch(setSearchTerm(e.target.value));
-    dispatch(setSetVisible());
-  },
-  loadMore() {
-    dispatch(setSetVisible(20));
-  },
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   fetchData() {
+//     dispatch(queryAPI());
+//   },
+//   handleFilter(e) {
+//     dispatch(setCategory(e.target.value));
+//     dispatch(setSetVisible());
+//   },
+//   handleSearchTerm(e) {
+//     dispatch(setSearchTerm(e.target.value));
+//     dispatch(setSetVisible());
+//   },
+//   loadMore() {
+//     dispatch(setSetVisible(20));
+//   },
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default Search;

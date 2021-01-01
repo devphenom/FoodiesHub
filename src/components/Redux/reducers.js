@@ -31,8 +31,9 @@ const visible = (state = 30, action) => {
 const allRecipe = (state = {}, action) => {
   if (action.type === ADD_ALL_RECIPE) {
     return Object.assign({}, state, {
-      [action.payload.recipeCategory]: action.payload.recipes,
+      [action.payload.objKey]: action.payload.objVal,
     });
+    // return action.payload;
   }
   return state;
 };

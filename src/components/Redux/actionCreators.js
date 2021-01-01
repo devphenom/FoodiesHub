@@ -34,8 +34,8 @@ export function setSetVisible(visible) {
   };
 }
 // Add all Recipe
-export function addAllRecipe(recipeCategory, recipes) {
-  return { type: ADD_ALL_RECIPE, payload: { recipeCategory, recipes } };
+export function addAllRecipe(objKey, objVal) {
+  return { type: ADD_ALL_RECIPE, payload: { objKey, objVal } };
 }
 
 // Add All Recipe
@@ -49,11 +49,19 @@ export function queryAPI() {
     const strCategories = await categories.map(
       ({ strCategory }) => strCategory
     );
-    strCategories.forEach((category) => {
-      axios
-        .get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`)
-        .then(({ data }) => dispatch(addAllRecipe(category, data.meals)));
+    // console.log(categories);
+    dispatch(addAllRecipe("categories", strCategories));
+    const strCat = strCategories.map(async (category) => {
+      const resp = await axios.get(
+        `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`
+      );
+      const data = await resp.data;
+      return { [category]: data.meals };
     });
+    await Promise.all(strCat).then((prom) =>
+      dispatch(addAllRecipe("allRecipe", prom))
+    );
+    // console.log(prom)
   };
 }
 
@@ -70,20 +78,15 @@ export function fetchRecipeDetails(idMeal) {
     );
     const { meals } = await response.data;
     dispatch(addRecipeDetails(meals[0]));
-    console.log(meals[0]);
-    // const apiData = getState().dataFetched[getState().searchTerm]
-    //   ? getState().dataFetched[getState().searchTerm]
-    //   : [];
-    // // console.log(apiData);
-    // const fetchedRecipe = apiData.find((obj) => obj.idMeal === idMeal) || "";
-    // if (fetchedRecipe) {
-    //   dispatch(addRecipeDetails(fetchedRecipe));
-    // } else {
-    //   axios
-    //     .get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`)
-    //     // .then((res) => console.log(res.data.meals[0]))
-    //     .then((res) => dispatch(addRecipeDetails(res.data.meals[0])))
-    //     .catch((error) => console.error(error));
-    // }
+    // console.log(response);
   };
 }
+
+// console.log(abc);
+// dispatch(addAllRecipe(abc));
+// strCategories.forEach((category) => {
+// const strccc = Promise.all(strCat).then((strc) => strc.map());
+//   axios
+//     .get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`)
+//     .then(({ data }) => dispatch(addAllRecipe(category, data.meals)));
+// });

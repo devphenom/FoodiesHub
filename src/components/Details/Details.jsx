@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Carousel } from "react-bootstrap";
 import { Link } from "@reach/router";
 
@@ -14,7 +14,15 @@ function getWindowDimensions() {
   };
 }
 
-const Details = ({ recipe, fetchAPI }) => {
+const Details = ({ id }) => {
+  // Redux
+  const recipe = useSelector((state) => state.fetchedRecipe[id]);
+  const dispatch = useDispatch();
+  const fetchAPI = useCallback(() => dispatch(fetchRecipeDetails(id)), [
+    id,
+    dispatch,
+  ]);
+
   // visible ingredients
   const [visibleIng, setVisibleIng] = useState(4);
 
@@ -208,19 +216,4 @@ const Details = ({ recipe, fetchAPI }) => {
   );
 };
 
-const mapStateToProps = (state, ownProps) => {
-  const recipe = state.fetchedRecipe[ownProps.id];
-
-  return {
-    searchTerm: state.searchTerm,
-    recipe,
-  };
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  fetchAPI() {
-    dispatch(fetchRecipeDetails(ownProps.id));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Details);
+export default Details;

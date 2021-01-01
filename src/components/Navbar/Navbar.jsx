@@ -1,11 +1,25 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "@reach/router";
 
 import { setSearchTerm, setCategory } from "../Redux/actionCreators";
 import "./Navbar.css";
 
 const Navbar = (props) => {
+  // Redux
+  const dispatch = useDispatch();
+  const searchTerm = useSelector((state) => state.searchTerm);
+  const recipeCategories = useSelector((state) => state.allRecipe.categories);
+  const category = useSelector((state) => state.category);
+  const handleFilter = useCallback(
+    (e) => dispatch(setCategory(e.target.value)),
+    [dispatch]
+  );
+  const handleSearchTerm = useCallback(
+    (e) => dispatch(setSearchTerm(e.target.value)),
+    [dispatch]
+  );
+
   let navItems;
   if (props.search) {
     navItems = (
@@ -27,13 +41,13 @@ const Navbar = (props) => {
               className="form-control search-input"
               id="category"
               placeholder="Filter by Category"
-              onChange={props.handleFilter}
-              onBlur={props.handleFilter}
-              value={props.category}
-              disabled={!props.recipeCategories.length}
+              onChange={handleFilter}
+              onBlur={handleFilter}
+              value={category}
+              // disabled={!recipeCategories.length}
             >
               <option value="">Filter by Category</option>
-              {props.recipeCategories.map((category) => (
+              {recipeCategories.map((category) => (
                 <option value={category} key={category}>
                   {category}
                 </option>
@@ -50,8 +64,8 @@ const Navbar = (props) => {
               <input
                 type="text"
                 className="form-control search-input"
-                value={props.searchTerm}
-                onChange={props.handleSearchTerm}
+                value={searchTerm}
+                onChange={handleSearchTerm}
                 placeholder="search meal..."
                 aria-label="search meal"
                 aria-describedby="search meal"
@@ -110,24 +124,24 @@ const Navbar = (props) => {
     </nav>
   );
 };
-const mapStateToProps = (state) => {
-  let recipeCategories = [];
-  for (let key in state.allRecipe) {
-    recipeCategories.push(key);
-  }
+// const mapStateToProps = (state) => {
+//   let recipeCategories = [];
+//   for (let key in state.allRecipe) {
+//     recipeCategories.push(key);
+//   }
 
-  return {
-    searchTerm: state.searchTerm,
-    recipeCategories,
-  };
-};
-const mapDispatchToProps = (dispatch) => ({
-  handleSearchTerm(e) {
-    dispatch(setSearchTerm(e.target.value));
-  },
-  handleFilter(e) {
-    dispatch(setCategory(e.target.value));
-  },
-});
+//   return {
+//     searchTerm: state.searchTerm,
+//     recipeCategories,
+//   };
+// };
+// const mapDispatchToProps = (dispatch) => ({
+//   handleSearchTerm(e) {
+//     dispatch(setSearchTerm(e.target.value));
+//   },
+//   handleFilter(e) {
+//     dispatch(setCategory(e.target.value));
+//   },
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+export default Navbar;

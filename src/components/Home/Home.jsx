@@ -1,15 +1,28 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Link } from "@reach/router";
+import React, { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, navigate } from "@reach/router";
 
 import { setSearchTerm, setCategory } from "../Redux/actionCreators";
 import Navbar from "../Navbar/Navbar";
 import "./Home.css";
-
 const Home = (props) => {
+  const dispatch = useDispatch();
+
+  // Redux
+  const searchTerm = useSelector((state) => state.searchTerm);
+  const handleSearchChange = useCallback(
+    (e) => dispatch(setSearchTerm(e.target.value)),
+    [dispatch]
+  );
+  const handleClear = useCallback(() => {
+    dispatch(setSearchTerm(""));
+    dispatch(setCategory(""));
+  }, [dispatch]);
+
+  // Navigate
   const handleRedirect = (e) => {
     e.preventDefault();
-    props.searchTerm && props.history.push(`/search`);
+    searchTerm && navigate(`/search`);
   };
 
   return (
@@ -29,10 +42,10 @@ const Home = (props) => {
                     type="text"
                     className="form-control input"
                     placeholder="search meal..."
-                    aria-label="Search meal"
-                    aria-describedby="basic-addon2"
-                    value={props.searchTerm}
-                    onChange={props.handleSearchChange}
+                    aria-label="Search meal by name"
+                    aria-describedby="search meal by name"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
                   />
                   <Link to={`/search`} className="input-group-append">
                     <span className="input-group-text button" id="basic-addon2">
@@ -58,10 +71,10 @@ const Home = (props) => {
                     type="text"
                     className="form-control input"
                     placeholder="search meal..."
-                    aria-label="Search meal"
-                    aria-describedby="basic-addon2"
-                    value={props.searchTerm}
-                    onChange={props.handleSearchChange}
+                    aria-label="Search meal by name"
+                    aria-describedby="Search meal by name"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
                   />
                   <div onClick={handleRedirect} className="input-group-append">
                     <span className="input-group-text button" id="basic-addon2">
@@ -81,7 +94,7 @@ const Home = (props) => {
               </p>
               <Link
                 to="/search"
-                onClick={props.handleClear}
+                onClick={handleClear}
                 className="btn btn-orange px-4 py-2 my-1 rounded-pill mr-3"
               >
                 Browse All
@@ -107,15 +120,4 @@ const Home = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({ searchTerm: state.searchTerm });
-const mapDispatchToProps = (dispatch) => ({
-  handleSearchChange(e) {
-    dispatch(setSearchTerm(e.target.value));
-  },
-  handleClear() {
-    dispatch(setSearchTerm(""));
-    dispatch(setCategory(""));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default Home;
