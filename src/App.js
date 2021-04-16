@@ -12,7 +12,7 @@ import NoMatch from "./components/NoMatch";
 
 import "./App.css";
 
-const Home = lazy(() => import("./"));
+// const Home = lazy(() => import("./components/Home/Home"));
 
 const App = () => {
   return (
